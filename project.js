@@ -1,10 +1,10 @@
 const attendanceForm = document.querySelector("#attendance-form");
 const recordsContainer = document.querySelector("#records-container");
 
-// Função para exibir os registros
+
 function checkRecords() {
     const records = JSON.parse(localStorage.getItem("records")) || [];
-    recordsContainer.innerHTML = ""; // Limpa os registros antes de renderizar
+    recordsContainer.innerHTML = ""; 
 
     records.forEach((record, index) => {
         const recordCard = document.createElement("div");
@@ -23,7 +23,7 @@ function checkRecords() {
     });
 }
 
-// Função para adicionar um novo registro
+
 attendanceForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -45,7 +45,7 @@ attendanceForm.addEventListener("submit", (e) => {
     checkRecords();
 });
 
-// Função para excluir um registro
+
 function deleteRecord(index) {
     const records = JSON.parse(localStorage.getItem("records")) || [];
     records.splice(index, 1);
@@ -53,14 +53,14 @@ function deleteRecord(index) {
     checkRecords();
 }
 
-// Função para alternar status entre "Entrada" e "Saída"
+
 function toggleStatus(index) {
     const records = JSON.parse(localStorage.getItem("records")) || [];
     records[index].status = records[index].status === "Entrada" ? "Saída" : "Entrada";
-    records[index].time = new Date().toLocaleString(); // Atualiza o horário
+    records[index].time = new Date().toLocaleString(); 
     localStorage.setItem("records", JSON.stringify(records));
     checkRecords();
 }
 
-// Inicializa os registros ao carregar a página
+
 document.addEventListener("DOMContentLoaded", checkRecords);
