@@ -1,47 +1,66 @@
-const nameForm = document.querySelector("#name-form");
-const welcomeContainer = document.querySelector ("#welcome");
-const logoutBtn = document.querySelector ("#logout");
+const attendanceForm = document.querySelector("#attendance-form");
+const recordsContainer = document.querySelector("#records-container");
 
+// Função para exibir os registros
+function checkRecords() {
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    recordsContainer.innerHTML = ""; // Limpa os registros antes de renderizar
 
-function checkUser(){
-    const userName = localStorage.getItem("name");
+    records.forEach((record, index) => {
+        const recordCard = document.createElement("div");
+        recordCard.classList.add("user-card");
 
-    if(userName){
+        recordCard.innerHTML = `
+            <h5>${record.name}</h5>
+            <p><strong>CPF:</strong> ${record.cpf}</p>
+            <p><strong>Horário:</strong> ${record.time}</p>
+            <p><strong>Status:</strong> ${record.status}</p>
+            <button class="btn btn-danger btn-sm" onclick="deleteRecord(${index})">Excluir</button>
+            <button class="btn btn-warning btn-sm" onclick="toggleStatus(${index})">Alterar para ${record.status === "Entrada" ? "Saída" : "Entrada"}</button>
+        `;
 
-        nameForm.style.display = "none";
-        welcomeContainer.style.display = "block";
-
-        const userNameElement = document.querySelector("#username");
-
-        userNameElement.textContent = userName;
-     } else {
-        nameForm.style.display = "block";
-        welcomeContainer.style.display = "none";
-
-    }
+        recordsContainer.appendChild(recordCard);
+    });
 }
 
-
-
-nameForm.addEventListener("submit", (e) =>{
+// Função para adicionar um novo registro
+attendanceForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const nameInput = document.querySelector("#name");
+    const cpfInput = document.querySelector("#cpf");
 
-    localStorage.setItem("name", nameInput.value);
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    records.push({ 
+        name: nameInput.value, 
+        cpf: cpfInput.value, 
+        time: new Date().toLocaleString(),
+        status: "Entrada" 
+    });
 
+    localStorage.setItem("records", JSON.stringify(records));
     nameInput.value = "";
+    cpfInput.value = "";
 
-    checkUser();
+    checkRecords();
 });
 
-logoutBtn.addEventListener("click", () =>{
+// Função para excluir um registro
+function deleteRecord(index) {
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    records.splice(index, 1);
+    localStorage.setItem("records", JSON.stringify(records));
+    checkRecords();
+}
 
-    localStorage.removeItem("name");
- 
-    checkUser();
-})
+// Função para alternar status entre "Entrada" e "Saída"
+function toggleStatus(index) {
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    records[index].status = records[index].status === "Entrada" ? "Saída" : "Entrada";
+    records[index].time = new Date().toLocaleString(); // Atualiza o horário
+    localStorage.setItem("records", JSON.stringify(records));
+    checkRecords();
+}
 
-// Começo da aplicação
-checkUser();
-
+// Inicializa os registros ao carregar a página
+document.addEventListener("DOMContentLoaded", checkRecords);

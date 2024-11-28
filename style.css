@@ -1,9 +1,7 @@
-
 body {
     background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
     color: #333;
 }
-
 
 h1 {
     font-size: 2.5rem;
@@ -11,19 +9,42 @@ h1 {
     margin-bottom: 20px;
 }
 
-
-form, #welcome {
+form {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.user-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background: white;
+    width: 300px; /* Ajustado para mais conteúdo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-card h5, .user-card p {
+    margin-bottom: 8px;
+}
+
+.user-card button {
+    margin-top: 8px;
+}
 
 @media (max-width: 768px) {
     h1 {
         font-size: 2rem;
     }
 
-    form, #welcome {
+    form {
         padding: 20px;
+    }
+
+    .user-card {
+        width: 100%;
     }
 }
 
@@ -32,7 +53,7 @@ form, #welcome {
         font-size: 1.5rem;
     }
 
-    form, #welcome {
+    form {
         padding: 15px;
     }
 
